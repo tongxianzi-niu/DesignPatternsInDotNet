@@ -2,44 +2,34 @@
 
 
 #region Open/Closed Principle Demo
-Payment pmt1 = new Payment(PaymentMode.Cash, 10.00M, Category.Food, "KFC");
-Payment pmt2 = new Payment(PaymentMode.Giro, 20.00M, Category.Food, "Old Hen");
-Payment pmt3 = new Payment(PaymentMode.Cash, 5.50M, Category.Stationary, "Pens");
-List<Payment> paymentList = new List<Payment>() { pmt1, pmt2, pmt3 };
+OpenClosedPrinciple oCDemo = new OpenClosedPrinciple();
+oCDemo.Demo();
+#endregion
 
-// old method
-PaymentFilter paymentFilter = new PaymentFilter();
-Console.WriteLine($"Old Method filter by category");
-foreach (Payment item in paymentFilter.FilterByCategory(paymentList, Category.Food))
-{
-    Console.WriteLine($"{item.Remarks}: {item.Amount}");
-}
+Console.WriteLine();
 
-Console.WriteLine($"Old Method filter by payment mode");
-foreach (Payment item in paymentFilter.FilterByPaymentMode(paymentList, PaymentMode.Cash))
-{
-    Console.WriteLine($"{item.Remarks}: {item.Amount}");
-}
+#region Liskov Substitution Principle Demo
 
-// new method
-Console.WriteLine($"Better Method filter by category");
-BetterPaymentFilter betterFilter = new BetterPaymentFilter();
-foreach (Payment item in betterFilter.Filter(paymentList, new CategoryCriteria(Category.Food)))
-{
-    Console.WriteLine($"{item.Remarks}: {item.Amount}");
-}
+static int Area(Rectangle r) => r.Width * r.Height;
 
-Console.WriteLine($"Better Method filter by payment mode");
-foreach (Payment item in betterFilter.Filter(paymentList, new PaymentModeCriteria(PaymentMode.Cash)))
-{
-    Console.WriteLine($"{item.Remarks}: {item.Amount}");
-}
+Rectangle r = new Rectangle(2, 3);
+Console.WriteLine($"{nameof(r.Width)}:{r.Width}, {nameof(r.Height)}:{r.Height}, {nameof(Area)}: {Area(r)}");
 
 
-Console.WriteLine($"Better Method filter by payment mode and category");
-foreach (Payment item in betterFilter.Filter(paymentList, new AndFilterCriteria<Payment>(new PaymentModeCriteria(PaymentMode.Cash), new CategoryCriteria(Category.Stationary))))
-{
-    Console.WriteLine($"{item.Remarks}: {item.Amount}");
-}
+Rectangle s = new Square(2, 3);
 
+// expected result should be 6 but actual result is 9
+// child class cannot replace parent class so square is not subtype of rectangle
+Console.WriteLine($"{nameof(s.Width)}:{s.Width}, {nameof(s.Height)}:{s.Height}, {nameof(Area)}: {Area(s)}");
+
+#endregion
+
+Console.WriteLine();
+
+#region Dependency Injection Priciple Demo
+DependencyInversionPrinciple dIDemo1 = new DependencyInversionPrinciple();
+dIDemo1.Example1Demo();
+
+DependencyInversionPrinciple dIDemo2 = new DependencyInversionPrinciple();
+dIDemo2.Example2Demo();
 #endregion
